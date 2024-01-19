@@ -18,7 +18,7 @@ import Foundation
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //@IBOutlet: Interface Builderとの接続を示すキーワードで、この宣言によってコードとInterface Builder（StoryboardまたはXIBファイル）で作成したUI要素を関連付けることができる
     //mainStoryboardのTableViewとIBoutlet接続
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tweetTextView: UITableView!
     //mainStoryboardのTableViewにあるボタンとIBoutlet接続
     @IBOutlet weak var newTweetButton: UIButton!
     //mainStoryboardのTableViewにあるボタンとIBAction接続
@@ -35,20 +35,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //親クラスのビューコントローラが持つ初期化や画面のセットアップが実行され、その後にサブクラスのviewDidLoadメソッドが続けて実行される
         super.viewDidLoad()
         //テーブルビューに対してカスタムセルを登録しています。UINibクラスを使用して、"TwitterHomeViewTableCell"というnib（Interface Builder（storyboardなど）で作成されたビューの設計図）を指定しています。これにより、テーブルビューが必要なときにこのnibを使用してセルを再利用できるようになります
-        tableView.register(UINib(nibName: "TwitterHomeViewTableCell", bundle: nil),forCellReuseIdentifier: "twitterHomeViewTableCell")
+        tweetTextView.register(UINib(nibName: "TwitterHomeViewTableCell", bundle: nil),forCellReuseIdentifier: "twitterHomeViewTableCell")
         //ViewControllerクラスがUITableViewDataSourceプロトコルを採用していることを示しています。データソースプロトコルは、テーブルビューにデータを提供するためのメソッドを実装する必要があります。 selfはこのViewControllerクラス自体を指します。おそらくデータソースプロトコルがあるとこれを書かないといけない。
-        tableView.dataSource = self
+        tweetTextView.dataSource = self
         //デリゲートプロトコルは、テーブルビューのイベントや動作に関するメソッドを実装するもの　おそらくデリゲートプロトコルがあるとこれを書かないといけない
-        tableView.delegate = self
+        tweetTextView.delegate = self
         //この行では、テーブルビューの最後に表示される余白（フッター）を空のUIViewに設定しています。これにより、テーブルビューの最後に余白ができるのを防ぐ
-        tableView.tableFooterView = UIView()
+        tweetTextView.tableFooterView = UIView()
         //インスタンス化
         setTwitterData()
     }
     //ツイートするテキスト直接書き込んでそのまま出力するメソッド
     func setTwitterData() {
         //データモデルに沿った形式でないといけない
-        let tweetDataModel = TweetDataModel(userName: "ユーザー名",recordDate: Date(), tweetText: "これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。")
+        let tweetDataModel = TweetDataModel(userName: "ユーザー名",recordDate: Date(), tweetText: "これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。")
         //このようにリストにデータを追加することで、後でそのリストを参照してツイートデータを取得したり、表示に利用することができる
         tweetDataList.append(tweetDataModel)
         //インスタンス化

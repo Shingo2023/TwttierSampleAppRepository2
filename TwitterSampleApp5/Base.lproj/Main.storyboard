@@ -55,7 +55,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="newTweetButton" destination="rKo-Ra-JgE" id="jQ2-pB-lgI"/>
-                        <outlet property="tableView" destination="ncl-0F-b2H" id="L0n-wP-PZd"/>
+                        <outlet property="tweetTextView" destination="ncl-0F-b2H" id="L0n-wP-PZd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nfo-w6-gzT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
