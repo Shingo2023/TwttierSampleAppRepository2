@@ -54,7 +54,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="recordDateLabel" destination="E5H-I0-lBx" id="ata-ng-oov"/>
-                <outlet property="twitterText" destination="vfe-zi-eZK" id="af0-rH-HxB"/>
+                <outlet property="tweetText" destination="vfe-zi-eZK" id="af0-rH-HxB"/>
                 <outlet property="userName" destination="d42-eb-93s" id="o3M-ru-tCD"/>
             </connections>
             <point key="canvasLocation" x="55" y="23"/>
