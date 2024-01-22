@@ -9,7 +9,7 @@ import Foundation
 
 struct TweetDataModel {
     
-    let userName: String
+    var userName: String
     var recordDate: Date
     var tweetText: String
 }

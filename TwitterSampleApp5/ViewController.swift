@@ -18,7 +18,7 @@ import Foundation
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //@IBOutlet: Interface Builderとの接続を示すキーワードで、この宣言によってコードとInterface Builder（StoryboardまたはXIBファイル）で作成したUI要素を関連付けることができる
     //mainStoryboardのTableViewとIBoutlet接続
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tweetTextView: UITableView!
     //mainStoryboardのTableViewにあるボタンとIBoutlet接続
     @IBOutlet weak var newTweetButton: UIButton!
     //mainStoryboardのTableViewにあるボタンとIBAction接続
@@ -35,20 +35,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //親クラスのビューコントローラが持つ初期化や画面のセットアップが実行され、その後にサブクラスのviewDidLoadメソッドが続けて実行される
         super.viewDidLoad()
         //テーブルビューに対してカスタムセルを登録しています。UINibクラスを使用して、"TwitterHomeViewTableCell"というnib（Interface Builder（storyboardなど）で作成されたビューの設計図）を指定しています。これにより、テーブルビューが必要なときにこのnibを使用してセルを再利用できるようになります
-        tableView.register(UINib(nibName: "TwitterHomeViewTableCell", bundle: nil),forCellReuseIdentifier: "twitterHomeViewTableCell")
+        tweetTextView.register(UINib(nibName: "TwitterHomeViewTableCell", bundle: nil),forCellReuseIdentifier: "twitterHomeViewTableCell")
         //ViewControllerクラスがUITableViewDataSourceプロトコルを採用していることを示しています。データソースプロトコルは、テーブルビューにデータを提供するためのメソッドを実装する必要があります。 selfはこのViewControllerクラス自体を指します。おそらくデータソースプロトコルがあるとこれを書かないといけない。
-        tableView.dataSource = self
+        tweetTextView.dataSource = self
         //デリゲートプロトコルは、テーブルビューのイベントや動作に関するメソッドを実装するもの　おそらくデリゲートプロトコルがあるとこれを書かないといけない
-        tableView.delegate = self
+        tweetTextView.delegate = self
         //この行では、テーブルビューの最後に表示される余白（フッター）を空のUIViewに設定しています。これにより、テーブルビューの最後に余白ができるのを防ぐ
-        tableView.tableFooterView = UIView()
+        tweetTextView.tableFooterView = UIView()
         //インスタンス化
         setTwitterData()
     }
     //ツイートするテキスト直接書き込んでそのまま出力するメソッド
     func setTwitterData() {
         //データモデルに沿った形式でないといけない
-        let tweetDataModel = TweetDataModel(userName: "ユーザー名",recordDate: Date(), tweetText: "これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。")
+        let tweetDataModel = TweetDataModel(userName: "ユーザー名",recordDate: Date(), tweetText: "これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。")
         //このようにリストにデータを追加することで、後でそのリストを参照してツイートデータを取得したり、表示に利用することができる
         tweetDataList.append(tweetDataModel)
         //インスタンス化
@@ -75,9 +75,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //引数として、tableViewは対象のUITableViewインスタンスを、sectionはセクションの番号を指定します。戻り値のIntは、指定されたセクションに含まれる行の数を示します。
     //numberOfRowsInSection セルの数を決めるメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                //tweetDataList配列で、配列の要素数（行の数）を返しています。テーブルビューに表示する行は、この関数が返す値によって制御されます。行の数がゼロまたは負の場合、セクションには何も表示されない
-                return tweetDataList.count
-        }
+        //tweetDataList配列で、配列の要素数（行の数）を返しています。テーブルビューに表示する行は、この関数が返す値によって制御されます。行の数がゼロまたは負の場合、セクションには何も表示されない
+        return tweetDataList.count
+    }
     //このメソッドは、UITableViewDelegateプロトコルの一部として実装されるメソッドであり、UITableViewの各行に対応するセルを提供するためのもの。  指定されたインデックスパス（indexPath）に対応するセルを作成して返している
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //セルの再利用を試み、再利用可能なセルが存在する場合はそれを取得し、存在しない場合は新しく作成します。withIdentifierで指定された識別子に基づいてセルを取得または作成します。取得したセルはTwitterHomeViewTableCell型としてアサーションされます。
@@ -86,7 +86,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let tweetDataModel: TweetDataModel = tweetDataList[indexPath.row]
         //カスタムセルである TwitterHomeViewTableCell の setup メソッドを呼び出して、セルに表示するデータを設定します。ユーザー名、記録日、ツイートのテキストなどを設定
         cell.setup(userName: tweetDataModel.userName, recordDateLabel: tweetDataModel.recordDate, tweetText: tweetDataModel.tweetText)
-            //最後に、セットアップが完了したセルを返します。これにより、テーブルビューがセルを表示できる
+        //最後に、セットアップが完了したセルを返します。これにより、テーブルビューがセルを表示できる
         return cell }
     //このメソッドは、UITableViewDelegate プロトコルの一部として実装されるメソッドであり、ユーザーがUITableViewの行を選択したときに呼び出されます。具体的には、タップされた行の位置を示す indexPath が引数として渡されます。
     // didSelectRowAt ユーザーがテーブルビューの行を選択したときに呼び出されます。引数として、tableViewは対象の UITableView インスタンスを、indexPathは行とセクションの位置を指定します。
@@ -96,4 +96,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
     }
 }
-
+//        //as!MemoDetailViewController
+//        let memoData = memoDataList[indexPath.row]
+//        TwitterDetailViewController.configure(memo: memoData)
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        navigationController?.pushViewController(memoDetailViewController, animated: true)
+//    }
+//}
