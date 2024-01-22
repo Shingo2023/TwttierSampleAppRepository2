@@ -30,7 +30,30 @@ class TweetEditViewController: UIViewController {
         let displayText: String = """
  \(newtweetDataModel.userName)\(newtweetDataModel.recordDate)\(newtweetDataModel.tweetText)
 """
+        //キーボードを閉じるためのメソッド
         view.endEditing(true)
         newTweetText.text = displayText
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // ビューが表示されたときにキーボードを表示
+        newTweetText.becomeFirstResponder()
+        
+    }
 }
+////教材移植させようとしてる
+//class TwitterDetailViewController: UIViewController {
+//    var userName: String = ""
+//    var recordDate: Date = Date()
+//    var tweetText: String = ""
+//
+//    func configure(memo: TweetDataModel) {
+//        userName = memo.userName
+//        recordDate = memo.recordDate
+//        tweetText = memo.tweetText
+//
+//        print("\(userName)\(recordDate)\(tweetText)")
+//    }
+//}

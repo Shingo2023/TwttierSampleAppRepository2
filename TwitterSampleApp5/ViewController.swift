@@ -75,9 +75,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //引数として、tableViewは対象のUITableViewインスタンスを、sectionはセクションの番号を指定します。戻り値のIntは、指定されたセクションに含まれる行の数を示します。
     //numberOfRowsInSection セルの数を決めるメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-                //tweetDataList配列で、配列の要素数（行の数）を返しています。テーブルビューに表示する行は、この関数が返す値によって制御されます。行の数がゼロまたは負の場合、セクションには何も表示されない
-                return tweetDataList.count
-        }
+        //tweetDataList配列で、配列の要素数（行の数）を返しています。テーブルビューに表示する行は、この関数が返す値によって制御されます。行の数がゼロまたは負の場合、セクションには何も表示されない
+        return tweetDataList.count
+    }
     //このメソッドは、UITableViewDelegateプロトコルの一部として実装されるメソッドであり、UITableViewの各行に対応するセルを提供するためのもの。  指定されたインデックスパス（indexPath）に対応するセルを作成して返している
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //セルの再利用を試み、再利用可能なセルが存在する場合はそれを取得し、存在しない場合は新しく作成します。withIdentifierで指定された識別子に基づいてセルを取得または作成します。取得したセルはTwitterHomeViewTableCell型としてアサーションされます。
@@ -86,7 +86,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let tweetDataModel: TweetDataModel = tweetDataList[indexPath.row]
         //カスタムセルである TwitterHomeViewTableCell の setup メソッドを呼び出して、セルに表示するデータを設定します。ユーザー名、記録日、ツイートのテキストなどを設定
         cell.setup(userName: tweetDataModel.userName, recordDateLabel: tweetDataModel.recordDate, tweetText: tweetDataModel.tweetText)
-            //最後に、セットアップが完了したセルを返します。これにより、テーブルビューがセルを表示できる
+        //最後に、セットアップが完了したセルを返します。これにより、テーブルビューがセルを表示できる
         return cell }
     //このメソッドは、UITableViewDelegate プロトコルの一部として実装されるメソッドであり、ユーザーがUITableViewの行を選択したときに呼び出されます。具体的には、タップされた行の位置を示す indexPath が引数として渡されます。
     // didSelectRowAt ユーザーがテーブルビューの行を選択したときに呼び出されます。引数として、tableViewは対象の UITableView インスタンスを、indexPathは行とセクションの位置を指定します。
@@ -96,4 +96,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
     }
 }
-
+//        //as!MemoDetailViewController
+//        let memoData = memoDataList[indexPath.row]
+//        TwitterDetailViewController.configure(memo: memoData)
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        navigationController?.pushViewController(memoDetailViewController, animated: true)
+//    }
+//}
