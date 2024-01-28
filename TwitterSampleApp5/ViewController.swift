@@ -17,14 +17,15 @@ import Foundation
 //UIViewControllerプロトコル iOSアプリケーションの画面管理に関連する基本的な機能を提供する
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //@IBOutlet: Interface Builderとの接続を示すキーワードで、この宣言によってコードとInterface Builder（StoryboardまたはXIBファイル）で作成したUI要素を関連付けることができる
-    //mainStoryboardのTableViewとIBoutlet接続
+    //mainStoryboardのTableViewとIBAction接続。変数tweetTextViewを宣言。UITableView!は元々のUIパーツ名
     @IBOutlet weak var tweetTextView: UITableView!
-    //mainStoryboardのTableViewにあるボタンとIBoutlet接続
+    
     @IBOutlet weak var newTweetButton: UIButton!
     //mainStoryboardのTableViewにあるボタンとIBAction接続
-    //(_ sender: UIButton)ボタンが押された際に呼び出されるメソッド
+    //(_ sender: UIButton)ボタンが押された際に呼び出されるメソッド)
     @IBAction func newTweetButton(_ sender: UIButton) {
-        transitiontoTweetEditView()//ransitiontoTweetEditView(): ツイートの編集画面に遷移するためのメソッド
+    //ransitiontoTweetEditView(): ツイートの編集画面に遷移するためのメソッド
+    transitiontoTweetEditView()
     }
     //twitterDataListを変数twitterDataListとして使えるようにしている
     var tweetDataList: [TweetDataModel] = []

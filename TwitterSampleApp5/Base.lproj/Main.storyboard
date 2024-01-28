@@ -11,51 +11,46 @@
         <!--View Controller-->
         <scene sceneID="rca-66-0IS">
             <objects>
-                <viewController id="GaS-2x-Z2Z" customClass="ViewController" customModule="TwitterSampleApp5" sceneMemberID="viewController">
+                <viewController id="GaS-2x-Z2Z" customClass="ViewController" customModule="TwitterSampleApp5" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7SD-uA-6Z9">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ncl-0F-b2H" customClass="TaleView">
-                                <rect key="frame" x="15" y="103" width="363" height="704"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="dXC-Rf-35i">
+                                <rect key="frame" x="16" y="103" width="361" height="685"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="GaS-2x-Z2Z" id="AAZ-j5-tsI"/>
-                                    <outlet property="delegate" destination="GaS-2x-Z2Z" id="gmI-UR-42f"/>
-                                </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rKo-Ra-JgE">
-                                <rect key="frame" x="318" y="737" width="60" height="60"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W7o-sf-rNa">
+                                <rect key="frame" x="308" y="693" width="60" height="60"/>
                                 <color key="backgroundColor" systemColor="systemCyanColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="DGD-4O-m6R"/>
-                                    <constraint firstAttribute="width" constant="60" id="yeI-QZ-AMT"/>
+                                    <constraint firstAttribute="height" constant="60" id="9DR-QA-w0d"/>
+                                    <constraint firstAttribute="width" constant="60" id="cBi-67-9ls"/>
                                 </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="＋"/>
                                 <connections>
-                                    <action selector="newTweetButton:" destination="GaS-2x-Z2Z" eventType="touchUpInside" id="kjF-Sp-tC5"/>
+                                    <action selector="newTweetButton:" destination="GaS-2x-Z2Z" eventType="touchUpInside" id="5S7-wa-72b"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="X70-56-7SL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="X70-56-7SL" firstAttribute="trailing" secondItem="ncl-0F-b2H" secondAttribute="trailing" constant="15" id="5Aw-Dh-rw0"/>
-                            <constraint firstAttribute="bottom" secondItem="ncl-0F-b2H" secondAttribute="bottom" constant="45" id="H6e-0Z-Zuh"/>
-                            <constraint firstItem="ncl-0F-b2H" firstAttribute="top" secondItem="X70-56-7SL" secondAttribute="top" id="HYa-Y2-D4w"/>
-                            <constraint firstItem="X70-56-7SL" firstAttribute="trailing" secondItem="rKo-Ra-JgE" secondAttribute="trailing" constant="15" id="P1q-64-Ihe"/>
-                            <constraint firstItem="ncl-0F-b2H" firstAttribute="leading" secondItem="X70-56-7SL" secondAttribute="leading" constant="15" id="vPB-Kv-004"/>
-                            <constraint firstItem="rKo-Ra-JgE" firstAttribute="top" secondItem="X70-56-7SL" secondAttribute="top" constant="634" id="yRF-rd-udy"/>
+                            <constraint firstAttribute="bottom" secondItem="dXC-Rf-35i" secondAttribute="bottom" constant="64" id="Jxy-7z-OpK"/>
+                            <constraint firstItem="X70-56-7SL" firstAttribute="trailing" secondItem="W7o-sf-rNa" secondAttribute="trailing" constant="25" id="R3S-nB-4UH"/>
+                            <constraint firstItem="X70-56-7SL" firstAttribute="trailing" secondItem="dXC-Rf-35i" secondAttribute="trailing" constant="16" id="Yk6-LP-J7b"/>
+                            <constraint firstItem="dXC-Rf-35i" firstAttribute="leading" secondItem="X70-56-7SL" secondAttribute="leading" constant="16" id="ZBm-h2-q4z"/>
+                            <constraint firstItem="dXC-Rf-35i" firstAttribute="top" secondItem="X70-56-7SL" secondAttribute="top" id="a12-Pt-Og8"/>
+                            <constraint firstItem="X70-56-7SL" firstAttribute="bottom" secondItem="W7o-sf-rNa" secondAttribute="bottom" constant="16" id="c1m-0I-FMP"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="1t6-ji-UBj"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="newTweetButton" destination="rKo-Ra-JgE" id="jQ2-pB-lgI"/>
-                        <outlet property="tweetTextView" destination="ncl-0F-b2H" id="L0n-wP-PZd"/>
+                        <outlet property="newTweetButton" destination="W7o-sf-rNa" id="ROI-BM-1IJ"/>
+                        <outlet property="tweetTextView" destination="dXC-Rf-35i" id="gwF-Ne-OT7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nfo-w6-gzT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
