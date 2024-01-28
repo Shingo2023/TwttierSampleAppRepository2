@@ -14,7 +14,9 @@ class TweetEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        didTapDone()//
         setDoneButton()
+
     }
     
     func setDoneButton() {
