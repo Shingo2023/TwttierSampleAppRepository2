@@ -6,10 +6,21 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct TweetDataModel {
+class TweetDataModel: Object {
     
-    var userName: String
-    var recordDate: Date
-    var tweetText: String
+    @objc dynamic var id: String = UUID().uuidString//データを一意に識別するための識別子
+    @objc dynamic var userName: String = ""
+    @objc dynamic var recordDate: Date = Date()
+    @objc dynamic var tweetText: String = ""
 }
+
+//import Foundation
+//
+//struct TweetDataModel {
+//
+//    var userName: String
+//    var recordDate: Date
+//    var tweetText: String
+//}
