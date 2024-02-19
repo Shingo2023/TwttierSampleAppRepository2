@@ -115,15 +115,6 @@ class TwitterHomeViewController: UIViewController, UITableViewDelegate, UITableV
         //取得したTweetEditViewControllerをナビゲーションコントローラーのスタックにプッシュしています。これにより、画面が遷移し、TweetEditViewControllerが表示されます。animatedパラメーターがtrueに設定されているため、画面遷移はアニメーションとともに行われます。このコードが実行されると、"TweetEditViewController"の画面がナビゲーションスタックに追加され、ユーザーに表示されます。
         navigationController?.pushViewController(tweetEditViewController, animated: true)
     }
-    //ツイート後の削除メソッド
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        let targetTweet = tweetDataList[indexPath.row]
-//        let realm = try! Realm()
-//        try! realm.write {
-//            realm.delete(targetTweet)
-//        }
-//        tweetDataList.remove(at: indexPath.row)
-//        tableView.deleteRows(at:[indexPath], with: .automatic)
     
     //セルを削除する際の処理を行うメソッド TableViewEditngStyle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -141,16 +132,20 @@ class TwitterHomeViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 //UITableViewDelegateプロトコルに含まれるメソッドの1つで、UITableViewCellの特定の行に対してトレイリング（右側）に表示されるスワイプアクションを構成するために使用されます。 このメソッドは、ユーザがテーブルビューのセルを右にスワイプしたときに呼び出され、指定されたIndexPathのセルに対してスワイプアクションを提供する役割を果たします。
+    //UISwipeActionsConfiguration? オプショナル型　何もない時はnilを返せるようになっている　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　->はSwiftの関数やメソッドの戻り値（return type）を示す記号
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //削除アクションを作成
+        //「削除」というタイトルで、破壊的なスタイル（赤い色など）の削除アクション（UIContextualAction）を作成します。　　　　　　　　　アクションが実行された際に実行されるクロージャが定義されています。
+        //ユーアイコンテキュアルのインスタンスを作成しています。　destructive:ディストラクティブ 破壊的なアクションスタイル
+        //クロージャー{}　アクションが実行されたときに実行される処理を定義しています。　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　completionHandlerはアクションが完了したことを通知するためのクロージャです。trueを渡すことで完了を通知します。
         let deleteAction = UIContextualAction(style: .destructive, title: "削除") { [weak self] (action, view, completionHandler) in
-            //削除処理を呼び出し
+            //削除アクションが実行された際に、指定されたインデックスパスの行に対して削除処理を実行するためにtableView(_:commit:forRowAt:)メソッドを呼び出します。
             self?.tableView(tableView, commit: .delete, forRowAt: indexPath)
-            //アクションが完了したことを通知
+            //アクションが完了したことを通知するため、trueを指定して完了ハンドラを呼び出します
             completionHandler(true)
         }
-        
+        //アクション（この場合は削除アクションのみ）の配列でUISwipeActionsConfigurationを作成します。
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        //作成したスワイプアクションの構成を返します。これにより、指定された行に対するトレーリングスワイプアクションが決定されます。
         return swipeConfiguration
     }
 }
