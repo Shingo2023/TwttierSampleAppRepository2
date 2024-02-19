@@ -7,55 +7,93 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 //サブクラス画面遷移後の内容をまとめて書く
 class TweetEditViewController: UIViewController {
-    @IBOutlet weak var newTweetText: UITextView!
+    @IBOutlet weak var newTweetTextUITextView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setNavigationBarButton()//ナビゲーションバーに投稿ボタンを配置
+        newTweetText() //テキスト　書き込むテキストと　ユーザー名、時間などを付属 また、それをRealmを使ってHomeViewに保存
         
-        didTapDone()//
-        setDoneButton()
-
+    }
+    //オブジェクトCのボタン機能を追加
+    @objc func tapAddButton() {
+        
+        saveData()//セーブデータを入れて
+        //この1行に変更で戻れる モーダル遷移を戻る
+        self.dismiss(animated: true)
+    }
+    //ナビゲーションバーボタン
+    @objc func setNavigationBarButton() {
+        //セレクター　//@objcのメソッドを使う合図　()アクションが呼び出される対象のメソッドを指定
+        let buttonActionSelector: Selector = #selector(tapAddButton)
+        //UIBarButtonItemの内容を定義
+        let rightBarButton = UIBarButtonItem(title: "投稿", style: .plain, target: self, action: buttonActionSelector)
+        //UIBarButtonItemはナビゲーションバーとライトバーボタンで定義
+        navigationItem.rightBarButtonItem = rightBarButton
+    }
+    //ツールバー上のキーボードと閉じるボタン
+    func setDoneBuuton () {
+        //ツールバー（キーボードを乗せるツールメニュー）の作成と設定
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        //フレキシブル　柔軟
+        //ツールバー内のアイテムの間に柔軟なスペースを作成するための UIBarButtonItem です。このスペースは、後で commitButton（Doneボタン）をツールバーの端に寄せるために使用されます。
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        //commitButton は、UIBarButtonItem のインスタンスで、システム提供の "Done" スタイルのボタンです。このボタンが押されたときに実行されるメソッドは commitButtonTapped です。このメソッドは #selector を使用して指定されています。
+        let commitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(commitButtonTapped))
+        //最後に、作成した flexibleSpace と commitButton をツールバーの items プロパティに設定しています。これにより、ツールバーに柔軟なスペースとDoneボタンが配置されます。
+        toolBar.items = [flexibleSpace, commitButton]
+        
+        // inputAccessoryView プロパティを使用して、キーボードの代わりに表示されるビューを指定しています。
+        //このツールバーには、柔軟なスペースと "Done" ボタンが含まれており、ユーザーがテキスト編集を行った後に "Done" ボタンをタップできるようになります。
+        newTweetTextUITextView.inputAccessoryView = toolBar
+    }
+    //"Done"ボタンがタップされると、このメソッドが呼ばれ、newTweetTextUITextView上のキーボードが閉じられるようになります。これによって、ユーザーがテキスト編集を終了し、キーボードを非表示にできるようになります。
+    @objc func commitButtonTapped() {
+        //テキスト入力フィールドやテキストビューなどのファーストレスポンダ（フォーカスを持つオブジェクト）が現在キーボードとして表示されている場合、そのキーボードを非表示にするメソッドです。
+        newTweetTextUITextView.resignFirstResponder()
     }
     
-    func setDoneButton() {
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 40))
-        let commitButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
-        toolBar.items = [commitButton]
-        
-        newTweetText.inputAccessoryView = toolBar
-    }
-    @objc func didTapDone() {
-        let newtweetDataModel = TweetDataModel(userName: "ユーザー名",recordDate: Date(), tweetText:"これは新しいツイート文です。")
+    func newTweetText() {
+        let newtweetDataModel = TweetDataModel()
+        newtweetDataModel.userName = "ユーザー名"
+        newtweetDataModel.recordDate = Date()
+        newtweetDataModel.tweetText = "これは新しいツイート文です。"
         
         let displayText: String = """
- \(newtweetDataModel.userName)\(newtweetDataModel.recordDate)\(newtweetDataModel.tweetText)
-"""
-        //キーボードを閉じるためのメソッド
-        view.endEditing(true)
-        newTweetText.text = displayText
+     \(newtweetDataModel.userName)\(newtweetDataModel.recordDate)\(newtweetDataModel.tweetText)
+    """
+        
+        newTweetTextUITextView.text = displayText
     }
     
+    //毎回実行されるライフサイクル
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // ビューが表示されたときにキーボードを表示
-        newTweetText.becomeFirstResponder()
+        newTweetTextUITextView.becomeFirstResponder()
         
     }
+    //    //データを保存するメソッド
+    //    //()内は引数リスト　withが外部引数名　text:が内部引数名　Stringが型名
+    //    //外部引数名とは、関数呼び出し時に使う引数のラベルです。内部引数名は関数内で引数を指すために使用されます。
+    func saveData() {
+        //モデルを定数tweetDataとして定義
+        let tweetData = TweetDataModel()
+        let newtweetDataModel = TweetDataModel()
+        newtweetDataModel.userName = "ユーザー名"
+        newtweetDataModel.recordDate = Date()
+        newtweetDataModel.tweetText = newTweetTextUITextView.text
+                
+        //データを保存する際にはこのようにRealmクラスをインスタンス化している try!を用いる
+        //try!は、エラーが発生した場合にプログラムをクラッシュさせることを意味します。 通常は、エラー処理が適切に行われるべきですが、この場合は単純な例外処理として使用されています。
+        let realm = try! Realm()
+        //writeライト　書く、書き込むという意味
+        try! realm.write {
+            realm.add(newtweetDataModel)//モデルを追加
+        }
+    }
 }
-////教材移植させようとしてる
-//class TwitterDetailViewController: UIViewController {
-//    var userName: String = ""
-//    var recordDate: Date = Date()
-//    var tweetText: String = ""
-//
-//    func configure(memo: TweetDataModel) {
-//        userName = memo.userName
-//        recordDate = memo.recordDate
-//        tweetText = memo.tweetText
-//
-//        print("\(userName)\(recordDate)\(tweetText)")
-//    }
-//}

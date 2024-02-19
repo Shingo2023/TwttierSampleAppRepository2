@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TwitterHomeViewController.swift
 //  TwitterSampleApp5
 //
 //  Created by 高橋真悟 on 2024/01/05.
@@ -8,14 +8,15 @@
 //モジュールをインポート　この先下記でかくコードはこのモジュールに格納されている機能しか扱えない
 import UIKit
 import Foundation
+import RealmSwift
 
 //iOSアプリケーションでは画面の制御に使用されるコントローラークラス
-//ViewControllerクラスが後続のそれらを継承している
+//TwitterHomeViewControllerクラスが後続のそれらを継承している
 //UIViewControllerはクラス　iOSアプリケーションの画面管理に関連する基本的な機能を提供するクラス
 //UITableViewDelegateはプロトコル　UITableView（テーブルビュー）のイベントや振る舞いに関連するメソッドを提供する
 //UITableViewDataSourceプロトコル　UITableViewに表示するデータの提供や管理に関連するメソッドを提供する
 //UIViewControllerプロトコル iOSアプリケーションの画面管理に関連する基本的な機能を提供する
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TwitterHomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //@IBOutlet: Interface Builderとの接続を示すキーワードで、この宣言によってコードとInterface Builder（StoryboardまたはXIBファイル）で作成したUI要素を関連付けることができる
     //mainStoryboardのTableViewとIBAction接続。変数tweetTextViewを宣言。UITableView!は元々のUIパーツ名
     @IBOutlet weak var tweetTextView: UITableView!
@@ -24,8 +25,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //mainStoryboardのTableViewにあるボタンとIBAction接続
     //(_ sender: UIButton)ボタンが押された際に呼び出されるメソッド)
     @IBAction func newTweetButton(_ sender: UIButton) {
-    //ransitiontoTweetEditView(): ツイートの編集画面に遷移するためのメソッド
-    transitiontoTweetEditView()
+        //ransitiontoTweetEditView(): ツイートの編集画面に遷移するためのメソッド
+        transitiontoTweetEditView()
     }
     //twitterDataListを変数twitterDataListとして使えるようにしている
     var tweetDataList: [TweetDataModel] = []
@@ -35,7 +36,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         //親クラスのビューコントローラが持つ初期化や画面のセットアップが実行され、その後にサブクラスのviewDidLoadメソッドが続けて実行される
         super.viewDidLoad()
-        //テーブルビューに対してカスタムセルを登録しています。UINibクラスを使用して、"TwitterHomeViewTableCell"というnib（Interface Builder（storyboardなど）で作成されたビューの設計図）を指定しています。これにより、テーブルビューが必要なときにこのnibを使用してセルを再利用できるようになります
+        //tweetTextViewに対してカスタムセルを登録しています。UINibクラスを使用して、"TwitterHomeViewTableCell"というnib（Interface Builder（storyboardなど）で作成されたビューの設計図）を指定しています。これにより、テーブルビューが必要なときにこのnibを使用してセルを再利用できるようになります
+        //register(_:forCellReuseIdentifier:) メソッドを使用してセルクラスを識別子で登録しています。
         tweetTextView.register(UINib(nibName: "TwitterHomeViewTableCell", bundle: nil),forCellReuseIdentifier: "twitterHomeViewTableCell")
         //ViewControllerクラスがUITableViewDataSourceプロトコルを採用していることを示しています。データソースプロトコルは、テーブルビューにデータを提供するためのメソッドを実装する必要があります。 selfはこのViewControllerクラス自体を指します。おそらくデータソースプロトコルがあるとこれを書かないといけない。
         tweetTextView.dataSource = self
@@ -45,13 +47,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tweetTextView.tableFooterView = UIView()
         //インスタンス化
         setTwitterData()
+        
+        func viewDidAppear(_ animated: Bool) {//画面が表示される度に毎回実行される
+            super.viewDidAppear(animated)
+            setTwitterData()//毎回テキストを受け取るメソッドsetTwitterDataが実行される
+            tweetTextView.reloadData()//実行される度にテーブルビューを再読み込みするメソッド
+        }
     }
-    //ツイートするテキスト直接書き込んでそのまま出力するメソッド
+    //エディタービューから保存されたテキストを受け取って表示するメソッド
     func setTwitterData() {
-        //データモデルに沿った形式でないといけない
-        let tweetDataModel = TweetDataModel(userName: "ユーザー名",recordDate: Date(), tweetText: "これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。これは(i)番目のツイートです。このツイートは文章が続くと下に伸びて表示されます。")
-        //このようにリストにデータを追加することで、後でそのリストを参照してツイートデータを取得したり、表示に利用することができる
-        tweetDataList.append(tweetDataModel)
+        let realm = try! Realm()
+        let result = realm.objects(TweetDataModel.self)
+        tweetDataList = Array(result)
+        
         //インスタンス化
         configureNewTweetButton()
     }
@@ -65,12 +73,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //transitionto 移行　つまり　ツイート編集画面に遷移するメソッド
     //この関数は引数を取らないことが期待されています。
     func transitiontoTweetEditView() {
-        //UIStoryboardクラスを使用して、"TweetEditViewController"という名前のストーリーボードを取得　バンドルはstoryboardなどが存在するディレクトリ構造のこと　nilはデフォルト
+        // Storyboardを取得
         let storyboard = UIStoryboard(name: "TweetEditViewController", bundle: nil)
-        //storyboardから"tweetEditViewController"という識別子を持つViewControllerをインスタンス化（instantiateViewController：インスタントシエート）します。 これにより、指定されたViewControllerが生成されます。
-        let tweetEditViewController = storyboard.instantiateViewController(identifier: "tweetEditViewController")
-        //presentメソッドでモーダル遷移している animated: true アニメーション有効
-        present(tweetEditViewController, animated: true)
+        //インスタントシエートでpush遷移 instantiateViewController（遷移前の識別子名） as! 型変換後のクラス名
+        if let viewControllerToPresent = storyboard.instantiateViewController(withIdentifier: "tweetEditViewController") as?TweetEditViewController {
+            // Navigation Controllerを作成し、rootViewControllerにviewControllerToPresentを指定
+            let navigationController = UINavigationController(rootViewController: viewControllerToPresent)
+            // モーダル遷移のスタイルをフルスクリーンに設定
+            navigationController.modalPresentationStyle = .fullScreen
+            // ナビゲーションバーをカスタマイズしたい場合は、viewControllerToPresent内で行う
+            // 遷移後の画面にNavigationバーを表示
+            self.present(navigationController, animated: true, completion: nil)
+        }
     }
     //func tableView　UITableViewのデータソースを提供するために必要なメソッド
     //引数として、tableViewは対象のUITableViewインスタンスを、sectionはセクションの番号を指定します。戻り値のIntは、指定されたセクションに含まれる行の数を示します。
@@ -93,14 +107,50 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // didSelectRowAt ユーザーがテーブルビューの行を選択したときに呼び出されます。引数として、tableViewは対象の UITableView インスタンスを、indexPathは行とセクションの位置を指定します。
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        //クラスを使用して、"Main" という名前のストーリーボードを取得
+        //UIStoryboardクラスを使用して、"Main" という名前のストーリーボードを取得
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //instantiateViewController(identifier:)メソッドを使用して、"TweetEditViewController"という識別子（Storyboard内のビューコントローラーの一意の識別子）に対応するビューコントローラー（画面）を取得しています。そして、それをTweetEditViewController型にダウンキャストしています。
+        //as!を使ったダウンキャストは強制キャスト。左辺の値を右辺の型へダウンキャストし、失敗した場合は実行時エラーとなる。
+        let tweetEditViewController = storyboard.instantiateViewController(identifier: "TweetEditViewController") as!TweetEditViewController
+        //取得したTweetEditViewControllerをナビゲーションコントローラーのスタックにプッシュしています。これにより、画面が遷移し、TweetEditViewControllerが表示されます。animatedパラメーターがtrueに設定されているため、画面遷移はアニメーションとともに行われます。このコードが実行されると、"TweetEditViewController"の画面がナビゲーションスタックに追加され、ユーザーに表示されます。
+        navigationController?.pushViewController(tweetEditViewController, animated: true)
+    }
+    //ツイート後の削除メソッド
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        let targetTweet = tweetDataList[indexPath.row]
+//        let realm = try! Realm()
+//        try! realm.write {
+//            realm.delete(targetTweet)
+//        }
+//        tweetDataList.remove(at: indexPath.row)
+//        tableView.deleteRows(at:[indexPath], with: .automatic)
+    
+    //セルを削除する際の処理を行うメソッド TableViewEditngStyle
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        //選択されたセルに対応するデータを取得
+        let targetMemo = tweetDataList[indexPath.row]
+        //Realm インスタンスを作成
+        let realm = try! Realm()
+        //Realm トランザクションを開始してメモを削除
+        try! realm.write {
+            realm.delete(targetMemo)
+        }
+        //データソースから削除
+        tweetDataList.remove(at: indexPath.row)
+        //テーブルビューから行を削除してアニメーション表示
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+//UITableViewDelegateプロトコルに含まれるメソッドの1つで、UITableViewCellの特定の行に対してトレイリング（右側）に表示されるスワイプアクションを構成するために使用されます。 このメソッドは、ユーザがテーブルビューのセルを右にスワイプしたときに呼び出され、指定されたIndexPathのセルに対してスワイプアクションを提供する役割を果たします。
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        //削除アクションを作成
+        let deleteAction = UIContextualAction(style: .destructive, title: "削除") { [weak self] (action, view, completionHandler) in
+            //削除処理を呼び出し
+            self?.tableView(tableView, commit: .delete, forRowAt: indexPath)
+            //アクションが完了したことを通知
+            completionHandler(true)
+        }
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
     }
 }
-//        //as!MemoDetailViewController
-//        let memoData = memoDataList[indexPath.row]
-//        TwitterDetailViewController.configure(memo: memoData)
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        navigationController?.pushViewController(memoDetailViewController, animated: true)
-//    }
-//}
