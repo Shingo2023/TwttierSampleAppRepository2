@@ -25,14 +25,22 @@ class TweetEditViewController: UIViewController {
         //この1行に変更で戻れる モーダル遷移を戻る
         self.dismiss(animated: true)
     }
+    
+    @objc func tapCancelButton() {
+        self.dismiss(animated: true)
+    }
+    
     //ナビゲーションバーボタン
     @objc func setNavigationBarButton() {
         //セレクター　//@objcのメソッドを使う合図　()アクションが呼び出される対象のメソッドを指定
         let buttonActionSelector: Selector = #selector(tapAddButton)
+        let cancelButtonSelector: Selector = #selector(tapCancelButton)
         //UIBarButtonItemの内容を定義
         let rightBarButton = UIBarButtonItem(title: "投稿", style: .plain, target: self, action: buttonActionSelector)
+        let cancelButton = UIBarButtonItem(title: "キャンセル", style: .plain, target: self, action: cancelButtonSelector)
         //UIBarButtonItemはナビゲーションバーとライトバーボタンで定義
         navigationItem.rightBarButtonItem = rightBarButton
+        navigationItem.leftBarButtonItem = cancelButton
     }
     //ツールバー上のキーボードと閉じるボタン
     func setDoneBuuton () {
