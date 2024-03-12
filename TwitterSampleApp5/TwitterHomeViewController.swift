@@ -47,12 +47,11 @@ class TwitterHomeViewController: UIViewController, UITableViewDelegate, UITableV
         tweetTextView.tableFooterView = UIView()
         //インスタンス化
         setTwitterData()
-        
-        func viewDidAppear(_ animated: Bool) {//画面が表示される度に毎回実行される
-            super.viewDidAppear(animated)
-            setTwitterData()//毎回テキストを受け取るメソッドsetTwitterDataが実行される
-            tweetTextView.reloadData()//実行される度にテーブルビューを再読み込みするメソッド
-        }
+    }
+    override func viewDidAppear(_ animated: Bool) {//画面が表示される度に毎回実行される
+        super.viewDidAppear(animated)
+        setTwitterData()//毎回テキストを受け取るメソッドsetTwitterDataが実行される
+        tweetTextView.reloadData()//実行される度にテーブルビューを再読み込みするメソッド
     }
     //エディタービューから保存されたテキストを受け取って表示するメソッド
     func setTwitterData() {
@@ -131,7 +130,7 @@ class TwitterHomeViewController: UIViewController, UITableViewDelegate, UITableV
         //テーブルビューから行を削除してアニメーション表示
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
-//UITableViewDelegateプロトコルに含まれるメソッドの1つで、UITableViewCellの特定の行に対してトレイリング（右側）に表示されるスワイプアクションを構成するために使用されます。 このメソッドは、ユーザがテーブルビューのセルを右にスワイプしたときに呼び出され、指定されたIndexPathのセルに対してスワイプアクションを提供する役割を果たします。
+    //UITableViewDelegateプロトコルに含まれるメソッドの1つで、UITableViewCellの特定の行に対してトレイリング（右側）に表示されるスワイプアクションを構成するために使用されます。 このメソッドは、ユーザがテーブルビューのセルを右にスワイプしたときに呼び出され、指定されたIndexPathのセルに対してスワイプアクションを提供する役割を果たします。
     //UISwipeActionsConfiguration? オプショナル型　何もない時はnilを返せるようになっている　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　->はSwiftの関数やメソッドの戻り値（return type）を示す記号
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //「削除」というタイトルで、破壊的なスタイル（赤い色など）の削除アクション（UIContextualAction）を作成します。　　　　　　　　　アクションが実行された際に実行されるクロージャが定義されています。

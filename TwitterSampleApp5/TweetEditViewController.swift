@@ -77,7 +77,7 @@ class TweetEditViewController: UIViewController {
         newTweetTextUITextView.text = displayText
     }
     
-    //毎回実行されるライフサイクル
+    //毎回実行されるライフサイクルメソッド
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -90,12 +90,12 @@ class TweetEditViewController: UIViewController {
     //    //外部引数名とは、関数呼び出し時に使う引数のラベルです。内部引数名は関数内で引数を指すために使用されます。
     func saveData() {
         //モデルを定数tweetDataとして定義
-        let tweetData = TweetDataModel()
+        //let tweetData = TweetDataModel()
         let newtweetDataModel = TweetDataModel()
         newtweetDataModel.userName = "ユーザー名"
         newtweetDataModel.recordDate = Date()
         newtweetDataModel.tweetText = newTweetTextUITextView.text
-                
+        
         //データを保存する際にはこのようにRealmクラスをインスタンス化している try!を用いる
         //try!は、エラーが発生した場合にプログラムをクラッシュさせることを意味します。 通常は、エラー処理が適切に行われるべきですが、この場合は単純な例外処理として使用されています。
         let realm = try! Realm()
@@ -104,4 +104,13 @@ class TweetEditViewController: UIViewController {
             realm.add(newtweetDataModel)//モデルを追加
         }
     }
+    //150字以上になったら投稿できないようにしている
+    func isTweetText(tweetText: String)->Bool {
+        //マックスツイートラングス
+        let maxTweetLenght = 150
+        //返す値は　カウントプロパティ　以上　文字数制限
+        return tweetText.count <= maxTweetLenght
+    }
 }
+
+//現状 → 投稿後画面遷移する際、150字以上だと保存されない。テスト結果も確認できない状態

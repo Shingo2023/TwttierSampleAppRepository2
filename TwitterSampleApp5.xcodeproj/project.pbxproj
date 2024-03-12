@@ -24,7 +24,6 @@
 		FAF135682B4ADC72004B70C5 /* TwitterHomeViewTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAF135662B4ADC72004B70C5 /* TwitterHomeViewTableCell.xib */; };
 		FAF1356A2B4BA66D004B70C5 /* TweetEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF135692B4BA66D004B70C5 /* TweetEditViewController.swift */; };
 		FAF1356C2B4BA69A004B70C5 /* TweetEditViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAF1356B2B4BA69A004B70C5 /* TweetEditViewController.storyboard */; };
-		FAF8AF462B561F0400485043 /* TwitterHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF135342B4811B8004B70C5 /* TwitterHomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -445,7 +444,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FAF8AF462B561F0400485043 /* TwitterHomeViewController.swift in Sources */,
 				FAF135482B4811BB004B70C5 /* TwitterSampleApp5Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
