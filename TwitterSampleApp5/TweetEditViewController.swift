@@ -104,13 +104,11 @@ class TweetEditViewController: UIViewController {
             realm.add(newtweetDataModel)//モデルを追加
         }
     }
-    //150字以上になったら投稿できないようにしている
+    //ツイートがTwitterの文字数制限内に収まっているかどうかを確認するための関数
     func isTweetText(tweetText: String)->Bool {
-        //マックスツイートラングス
-        let maxTweetLenght = 150
-        //返す値は　カウントプロパティ　以上　文字数制限
-        return tweetText.count <= maxTweetLenght
+        //マックスツイートレングス　を設定
+        let maxTweetLength = 150
+        //返す値は　ツイート文字数　が　150字　以上　が成立したら　ture
+        return tweetText.count <= maxTweetLength
     }
 }
-
-//現状 → 投稿後画面遷移する際、150字以上だと保存されない。テスト結果も確認できない状態
