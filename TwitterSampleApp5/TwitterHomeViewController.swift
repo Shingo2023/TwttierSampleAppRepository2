@@ -3,7 +3,6 @@
 //  TwitterSampleApp5
 //
 //  Created by 高橋真悟 on 2024/01/05.
-//
 
 //モジュールをインポート　この先下記でかくコードはこのモジュールに格納されている機能しか扱えない
 import UIKit
